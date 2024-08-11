@@ -1,0 +1,76 @@
+SELECT * FROM retail_data.`copy of online retail`;
+#1. Sales Performance Analysis
+#Total Sales Calculation:
+SELECT InvoiceNo, SUM(Quantity * UnitPrice) AS TotalSales
+FROM retail_data.`copy of online retail`
+GROUP BY InvoiceNo;
+SELECT CustomerID, SUM(Quantity * UnitPrice) AS LifetimeValue
+FROM retail_data.`copy of online retail`
+GROUP BY CustomerID
+ORDER BY LifetimeValue DESC;
+
+SELECT DATE_FORMAT(InvoiceDate, '%Y-%m') AS Month, SUM(Quantity * UnitPrice) AS TotalSales
+FROM retail_data.`copy of online retail`
+GROUP BY DATE_FORMAT(InvoiceDate, '%Y-%m')
+ORDER BY Month;
+#Customer Insights
+#Top Customers
+SELECT CustomerID, SUM(Quantity * UnitPrice) AS TotalSpend
+FROM retail_data.`copy of online retail`
+GROUP BY CustomerID
+ORDER BY TotalSpend DESC
+LIMIT 10;
+#Customer Purchase Patterns
+SELECT CustomerID, StockCode, COUNT(*) AS PurchaseFrequency
+FROM retail_data.`copy of online retail`
+GROUP BY CustomerID, StockCode
+ORDER BY CustomerID, PurchaseFrequency DESC;
+#Product Analysis
+#Best-Selling Products:
+SELECT StockCode, Description, SUM(Quantity) AS TotalQuantitySold
+FROM retail_data.`copy of online retail`
+GROUP BY StockCode, Description
+ORDER BY TotalQuantitySold DESC;
+#Stock Turnover:
+SELECT StockCode, Description, AVG(Quantity) AS AverageQuantitySold
+FROM retail_data.`copy of online retail`
+GROUP BY StockCode, Description;
+#Geographic Analysis
+#Sales by Country:
+SELECT Country, SUM(Quantity * UnitPrice) AS TotalSales
+FROM retail_data.`copy of online retail`
+GROUP BY Country
+ORDER BY TotalSales DESC;
+#Regional Trends:
+SELECT Country, DATE_FORMAT(InvoiceDate, '%m-%Y') AS Month, SUM(Quantity * UnitPrice) AS TotalSales
+FROM retail_data.`copy of online retail`
+GROUP BY Country, DATE_FORMAT(InvoiceDate, '%m-%Y')
+#Invoice Analysis
+#Invoice Frequency
+SELECT DATE_FORMAT(InvoiceDate,'%m-%Y' ) AS Month, COUNT(DISTINCT InvoiceNo) AS InvoiceCount
+FROM retail_data.`copy of online retail`
+GROUP BY DATE_FORMAT(InvoiceDate,'%m-%Y')
+ORDER BY Month;
+SELECT *
+FROM retail_data.`copy of online retail`
+WHERE InvoiceNo IS NULL
+   OR StockCode IS NULL
+   OR Description IS NULL
+   OR Quantity IS NULL
+   OR InvoiceDate IS NULL
+   OR UnitPrice IS NULL
+   OR CustomerID IS NULL
+#Segment by Spend:
+SELECT CustomerID, SUM(Quantity * UnitPrice) AS TotalSpend
+FROM retail_data.`copy of online retail`
+GROUP BY CustomerID
+ORDER BY TotalSpend DESC;
+
+
+
+
+
+
+
+
+
